@@ -74,8 +74,8 @@ TileSetDrawTileFromTexture(Texture texture, int x, int y, NezVec2_i texturePosit
 #undef NEZ_TILESET_IMPLEMENTATION
 
 TileSet*    TileSetNew(){
-    TileSet *tileSet = malloc(sizeof(TileSet));
-    *tileSet = (TileSet){0};
+    TileSet *tileSet = (TileSet *)malloc(sizeof(TileSet));
+    *tileSet = TileSet {0};
     return tileSet;
 }
 
@@ -141,11 +141,11 @@ void TileSetDrawTile(TileSet *tileSet, int id, int x, int y){
         int col = id % tileSet->collumns;
         int row = id / tileSet->collumns;
         Rectangle tileRect = {(float)col * tileSet->tileX, (float)row * tileSet->tileY, (float)tileSet->tileX, (float)tileSet->tileY};
-        DrawTextureRec(tileSet->texture, tileRect, (Vector2){(float)x, (float)y}, WHITE);
+        DrawTextureRec(tileSet->texture, tileRect, Vector2 {(float)x, (float)y}, WHITE);
     }
     else{
         Rectangle tileRect = {(float)tileSet->positionList[id].x, (float)tileSet->positionList[id].y, (float)tileSet->tileX, (float)tileSet->tileY};
-        DrawTextureRec(tileSet->texture, tileRect, (Vector2){(float)x, (float)y}, WHITE);
+        DrawTextureRec(tileSet->texture, tileRect, Vector2 {(float)x, (float)y}, WHITE);
     }
 }
 
@@ -153,12 +153,12 @@ void TileSetDrawTileStandalone(Texture texture, int id, int x, int y, int tileCo
 	int col = id % tileCollumns;
 	int row = id / tileCollumns;
 	Rectangle tileRect = {(float)col * tileWidth, (float)row * tileHeight, (float)tileWidth, (float)tileHeight};
-	DrawTextureRec(texture, tileRect, (Vector2){(float)x, (float)y}, WHITE);
+	DrawTextureRec(texture, tileRect, Vector2 {(float)x, (float)y}, WHITE);
 }
 
 void TileSetDrawTileFromTexture(Texture texture, int x, int y, NezVec2_i texturePosition, int tileWidth, int tileHeight){
 	Rectangle tileRect = {(float)texturePosition.x, (float)texturePosition.y, (float)tileWidth, (float)tileHeight};
-	DrawTextureRec(texture, tileRect, (Vector2){(float)x, (float)y}, WHITE);
+	DrawTextureRec(texture, tileRect, Vector2 {(float)x, (float)y}, WHITE);
 }
 
 #endif //NEZ_TILESET_IMPLEMENTATION

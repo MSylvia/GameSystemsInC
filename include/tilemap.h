@@ -85,8 +85,8 @@ extern "C"
 #undef NEZ_TILEMAP_IMPLEMENTATION
 TileMap *TileMapNew()
 {
-    TileMap *tileMap = malloc(sizeof(TileMap));
-    *tileMap = (TileMap){0};
+    TileMap *tileMap = (TileMap*)malloc(sizeof(TileMap));
+    *tileMap = TileMap {0};
     TileMapInitSize(tileMap, 1, 1);
     return tileMap;
 }
@@ -108,7 +108,7 @@ void TileMapInitSize(TileMap *tileMap, int width, int height)
     {
         free(tileMap->grid);
     }
-    tileMap->grid = malloc(sizeof(int) * width * height);
+    tileMap->grid = (int*)malloc(sizeof(int) * width * height);
     TileMapClearGrid(tileMap);
 }
 
@@ -199,7 +199,7 @@ NezVec2_i TileMapSetTileResize(TileMap *tileMap, int x, int y, int id)
         TileMapResize(tileMap, left, top, right, bottom);
         x -= left;
         y -= top;
-        offset = (NezVec2_i){left, top};
+        offset = NezVec2_i {left, top};
         tileMap->grid[x + y * tileMap->width] = id;
     }
     NezVec2_i trimOffset = TileMapTrim(tileMap);
@@ -227,7 +227,7 @@ void TileMapResize(TileMap *tileMap, int left, int top, int right, int bottom)
     int h = tileMap->height - top + bottom;       //new height
     int *tmp = tileMap->grid;                     //preparing for deleting old pointer
 
-    tileMap->grid = malloc(sizeof(int) * w * h);
+    tileMap->grid = (int*)malloc(sizeof(int) * w * h);
     for (int i = 0; i < w * h; i++)
     {
         tileMap->grid[i] = -1;
@@ -297,7 +297,7 @@ NezVec2_i TileMapTrim(TileMap *tileMap)
     {
         TileMapResize(tileMap, left, top, right, bottom);
     }
-    return (NezVec2_i){left, top};
+    return NezVec2_i {left, top};
 }
 
 NezVec2_i TileMapWorld2Tile(TileMap *tileMap, int x, int y)
@@ -314,14 +314,14 @@ NezVec2_i TileMapWorld2Tile(TileMap *tileMap, int x, int y)
     }
     x = x / tileMap->tileSet->tileX;
     y = y / tileMap->tileSet->tileY;
-    return (NezVec2_i){x, y};
+    return NezVec2_i {x, y};
 }
 
 NezVec2_i TileMapTile2World(TileMap *tileMap, int x, int y)
 {
     int _x = x * tileMap->tileSet->tileX + tileMap->x;
     int _y = y * tileMap->tileSet->tileY + tileMap->y;
-    return (NezVec2_i){_x, _y};
+    return NezVec2_i {_x, _y};
 }
 
 void TileMapClearGrid(TileMap *tileMap)
